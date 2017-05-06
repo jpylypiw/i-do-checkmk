@@ -81,9 +81,9 @@ if ( ! class_exists( 'Check_MK_API' )) {
             $this->_API_URL = $hostname . '/' . $instance . '/check_mk/webapi.py';
             if ($ssl == true) {
                 $this->_API_URL = 'https://' . $this->_API_URL;
-            } else {
-                $this->_API_URL = 'http://' . $this->_API_URL;
+                return;
             }
+            $this->_API_URL = 'http://' . $this->_API_URL;
         }
 
         /**
@@ -96,23 +96,23 @@ if ( ! class_exists( 'Check_MK_API' )) {
          */
         private function send_request($action, $attributes = '', $post_data = '') {
             $response = '';
-            $ch = null;
+            $request = null;
 
             try {
-                $ch = curl_init();
+                $request = curl_init();
 
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-                curl_setopt($ch, CURLOPT_URL, $this->_API_URL . '?action=' . $action . '&_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, 'request=' . $post_data);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($request, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($request, CURLOPT_URL, $this->_API_URL . '?action=' . $action . '&_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes);
+                curl_setopt($request, CURLOPT_POSTFIELDS, 'request=' . $post_data);
+                curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
-                $response = curl_exec($ch);
+                $response = curl_exec($request);
             }
             catch (\Exception $exception) {
                 error_log($exception->getMessage());
             }
             finally {
-                curl_close($ch);
+                curl_close($request);
             }
 
             return $this->validate_response($response);

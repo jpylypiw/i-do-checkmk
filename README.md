@@ -1,4 +1,4 @@
-# i-do-checkmk
+# i-do-checkmk [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9cb7685f2f504877a39800e656d45c43)](https://www.codacy.com/app/KingJP/i-do-checkmk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KingJP/i-do-checkmk&amp;utm_campaign=Badge_Grade)
 
 This is a interface between Check_MK Monitoring and i-doit IT Documentation tool. 
 
