@@ -64,6 +64,14 @@ if ( ! class_exists( 'Check_MK_API' )) {
         private $_API_URL;
 
         /**
+         * Check_MK has a special Inventory API url.
+         * This is set automatically.
+         *
+         * @var string
+         */
+        private $_INVENTORY_API_URL;
+
+        /**
          * Check_MK_API constructor.
          * @param $hostname
          * @param $instance
@@ -78,12 +86,13 @@ if ( ! class_exists( 'Check_MK_API' )) {
             $this->_USERNAME = $username;
             $this->_PASSWORD = $password;
 
-            $this->_API_URL = $hostname . '/' . $instance . '/check_mk/webapi.py';
-            if ($ssl == true) {
-                $this->_API_URL = 'https://' . $this->_API_URL;
-                return;
-            }
-            $this->_API_URL = 'http://' . $this->_API_URL;
+            $hostname = trim($hostname, '/');
+            $instance = trim($instance, '/');
+
+            $check_mk_server = ($ssl === true ? 'https://' : 'http://') .  $hostname . '/' . $instance . '/check_mk/';
+
+            $this->_API_URL = $check_mk_server . 'webapi.py';
+            $this->_INVENTORY_API_URL = $check_mk_server . 'host_inv_api.py';
         }
 
         /**
@@ -101,9 +110,14 @@ if ( ! class_exists( 'Check_MK_API' )) {
             try {
                 $request = curl_init();
 
-                curl_setopt($request, CURLOPT_CUSTOMREQUEST, "POST");
-                curl_setopt($request, CURLOPT_URL, $this->_API_URL . '?action=' . $action . '&_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes);
-                curl_setopt($request, CURLOPT_POSTFIELDS, 'request=' . $post_data);
+                if ($action !== 'host_inv_api') {
+                    curl_setopt($request, CURLOPT_URL, $this->_API_URL . '?action=' . $action . '&_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes);
+                    curl_setopt($request, CURLOPT_CUSTOMREQUEST, "POST");
+                    curl_setopt($request, CURLOPT_POSTFIELDS, 'request=' . $post_data);
+                } else {
+                    curl_setopt($request, CURLOPT_URL, $this->_INVENTORY_API_URL . '?_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes );
+                }
+
                 curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
                 $response = curl_exec($request);
@@ -115,6 +129,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
                 curl_close($request);
             }
 
+            $response = mb_convert_encoding( $response, 'UTF-8' );
             return $this->validate_response($response);
         }
 
@@ -126,16 +141,15 @@ if ( ! class_exists( 'Check_MK_API' )) {
          * @return bool|mixed
          */
         private function validate_response($response) {
-            if ( ! json_decode($response)) {
-                error_log('Can not validate Check_MK Server Response. Server Response as Text: ' . $response);
-                return false;
-            }
+            json_decode($response);
 
-            $response = json_decode($response);
+            if ( json_last_error() === JSON_ERROR_NONE) {
+                $response = json_decode($response);
 
-            if ($response->result_code == 1) {
-                error_log('Got Error from Check_MK. Error Message: ' . $response->result);
-                return false;
+                if ($response->result_code === 1) {
+                    error_log('Got Error from Check_MK. Error Message: ' . $response->result);
+                    return false;
+                }
             }
 
             return $response;
@@ -341,6 +355,46 @@ if ( ! class_exists( 'Check_MK_API' )) {
             }
 
             return $this->send_request('activate_changes', '&mode=' . $mode . '&allow_foreign_changes=' . $allow_foreign_changes, $post_data);
+        }
+
+        /**
+         * The HW/SW inventory data can now be exported using a webservice. This webservice outputs the raw structured inventory data of a host.
+         *
+         * Full Documentation of Werk 3585:
+         * http://mathias-kettner.de/check_mk_werks.php?werk_id=3585&HTML=yes
+         *
+         * $hostname:
+         * { "hostname": "winxp_1" }
+         *
+         * $output_format:
+         * json, xml, python
+         *
+         * $paths:
+         * [".hardware.memory.total_ram_usable", ".hardware.memory.total_swap"]
+         *
+         * @param string $hostname
+         * @param string $output_format
+         * @param array $paths
+         * @return bool|mixed
+         */
+        public function host_inv_api($hostname, $output_format = 'json', $paths = array()) {
+            if ( is_array($hostname) && !array_key_exists( 'hosts', $hostname) ) {
+                $hostname = array( 'hosts' => $hostname );
+            }
+
+            if ( is_array($hostname) ) {
+                $hostname = json_encode($hostname);
+            }
+
+            if ( count($paths) > 0 && !array_key_exists('paths', $paths) ) {
+                $paths = array( 'paths' => $paths );
+            }
+
+            if ( count($paths) > 0 ) {
+                $paths = json_encode($paths);
+            }
+
+            return $this->send_request('host_inv_api', '&host=' . $hostname . '&output_format=' . $output_format . (count($paths) > 0 ? '&request=' . $paths : ''));
         }
 
     }

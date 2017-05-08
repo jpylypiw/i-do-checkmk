@@ -5,7 +5,7 @@ This is a interface between Check_MK Monitoring and i-doit IT Documentation tool
 **Contributors:** [kingjp](https://github.com/KingJP)  
 **Requires at least:** PHP5.0  
 **Tested up to:** PHP7.0  
-**Stable tag:** 0.0.1   
+**Stable tag:** 0.0.2   
 **License:** [GPLv3 or later](https://github.com/KingJP/i-do-checkmk/blob/master/LICENSE)
 
 ## Description ##
@@ -57,6 +57,17 @@ Features:
 - Created Class for Check_MK API
 - Created Class for checking PHP dependencies
 - Added Code of Conduct
+
+### 0.0.2 (2017-05-09)
+
+Features:
+
+- Added Check_MK Inventory API (Requires Check_MK 1.4.0i1)
+
+Bugfixes:
+
+- Charset Fixes in Send Request with Charset Encoding
+- Code Cleanup in validate_response
 
 ## Contributing ##
 
