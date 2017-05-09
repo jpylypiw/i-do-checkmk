@@ -7,13 +7,8 @@ php:
   - 7.1
   - hhvm
 
-# In case of timeouts and build failures you may want to prepend 'travis_retry' to the following commands:
-#before_script:
-#  - curl -s http://getcomposer.org/installer | php
-#  - php composer.phar install -n
-
 script:
-  - php vendor/bin/phpunit --configuration phpunit.xml --coverage-text
+  - phpunit --configuration phpunit.xml --coverage-text --verbose
 
 after_script:
   - php vendor/bin/codacycoverage clover path/to/clover.xml
