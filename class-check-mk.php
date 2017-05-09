@@ -93,6 +93,8 @@ if ( ! class_exists( 'Check_MK_API' )) {
 
             $this->_API_URL = $check_mk_server . 'webapi.py';
             $this->_INVENTORY_API_URL = $check_mk_server . 'host_inv_api.py';
+
+            return true;
         }
 
         /**
@@ -103,7 +105,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
          * @param string $post_data
          * @return bool|mixed
          */
-        private function send_request($action, $attributes = '', $post_data = '') {
+        private function send_request($action, $attributes = '', $post_data = '{}') {
             $response = '';
             $request = null;
 
@@ -345,7 +347,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
          * @return bool|mixed
          */
         public function activate_changes($sites = null, $mode = 'dirty', $allow_foreign_changes = 0) {
-            $post_data = '';
+            $post_data = '{}';
 
             if ($sites != null) {
                 $post_data = array(
