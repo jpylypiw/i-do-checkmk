@@ -1,11 +1,11 @@
-# i-do-checkmk [![Build Status](https://travis-ci.org/KingJP/i-do-checkmk.svg?branch=master)](https://travis-ci.org/KingJP/i-do-checkmk) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9cb7685f2f504877a39800e656d45c43)](https://www.codacy.com/app/KingJP/i-do-checkmk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KingJP/i-do-checkmk&amp;utm_campaign=Badge_Grade)
+# i-do-checkmk [![Build Status](https://travis-ci.org/KingJP/i-do-checkmk.svg?branch=master)](https://travis-ci.org/KingJP/i-do-checkmk) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9cb7685f2f504877a39800e656d45c43)](https://www.codacy.com/app/KingJP/i-do-checkmk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KingJP/i-do-checkmk&amp;utm_campaign=Badge_Grade) [![Code Climate](https://codeclimate.com/github/KingJP/i-do-checkmk/badges/gpa.svg)](https://codeclimate.com/github/KingJP/i-do-checkmk) [![Coverage Status](https://coveralls.io/repos/KingJP/i-do-checkmk/badge.svg?branch=master)](https://coveralls.io/github/KingJP/i-do-checkmk) [![status](https://img.shields.io/badge/status-alpha-red.svg)](https://github.com/KingJP/i-do-checkmk)
 
 This is a interface between Check_MK Monitoring and i-doit IT Documentation tool. 
 
 **Contributors:** [kingjp](https://github.com/KingJP)  
-**Requires at least:** PHP5.0  
-**Tested up to:** PHP7.0  
-**Stable tag:** 0.0.2   
+**Requires at least:** i-doit 1.8, check_mk 1.4.0, PHP5  
+**Tested up to:** PHP7.1  
+**Release tag:** 0.0.2 alpha   
 **License:** [GPLv3 or later](https://github.com/KingJP/i-do-checkmk/blob/master/LICENSE)
 
 ## Description ##
@@ -48,15 +48,25 @@ Updating with git is quite simple. You have to execute `git pull` in i-do-checkm
 
 Updating manually installed version is simple too. Save your config.php in another folder. Delete i-do-checkmk folder. Reinstall i-do-checkmk manually and replace config.php. 
 
+## Contributing ##
+
+**Pull requests are welcome.** Have a look in out Wiki before posting an issue. Your question may be answered there. Please review the [code of conduct](https://github.com/KingJP/i-do-checkmk/blob/master/code_of_conduct.md).
+
 ## Changelog ##
 
-### 0.0.1 (2017-05-06)
+### Preview: 0.0.3 (2017-05-??)
 
 Features:
 
-- Created Class for Check_MK API
-- Created Class for checking PHP dependencies
-- Added Code of Conduct
+- Unit Testing using PHPUnit
+- Automated testing with Travis-CI
+- Added Status Badge in README
+- Coverage testing
+- Code Tests using Codacy and Code Climate
+
+Bugfixes:
+
+- Minor bug fixes in class-check-mk.php
 
 ### 0.0.2 (2017-05-09)
 
@@ -69,6 +79,10 @@ Bugfixes:
 - Charset Fixes in Send Request with Charset Encoding
 - Code Cleanup in validate_response
 
-## Contributing ##
+### 0.0.1 (2017-05-06)
 
-**Pull requests are welcome.** Have a look in out Wiki before posting an issue. Your question may be answered there. Please review the [code of conduct](https://github.com/KingJP/i-do-checkmk/blob/master/code_of_conduct.md).
+Features:
+
+- Created Class for Check_MK API
+- Created Class for checking PHP dependencies
+- Added Code of Conduct
