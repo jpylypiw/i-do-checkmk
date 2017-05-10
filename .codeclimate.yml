@@ -8,6 +8,10 @@ engines:
     enabled: true
   markdownlint:
     enabled: true
+    config:
+      br_spaces: 2
+      linelength: 150
+      ol-prefix: "ordered"
   phan:
     enabled: true
     config:
@@ -41,4 +45,4 @@ ratings:
   - "**.md"
 
 exclude_paths:
-# - tests/
+ - tests/

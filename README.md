@@ -1,6 +1,11 @@
-# i-do-checkmk [![Build Status](https://travis-ci.org/KingJP/i-do-checkmk.svg?branch=master)](https://travis-ci.org/KingJP/i-do-checkmk) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9cb7685f2f504877a39800e656d45c43)](https://www.codacy.com/app/KingJP/i-do-checkmk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KingJP/i-do-checkmk&amp;utm_campaign=Badge_Grade) [![Code Climate](https://codeclimate.com/github/KingJP/i-do-checkmk/badges/gpa.svg)](https://codeclimate.com/github/KingJP/i-do-checkmk) [![Coverage Status](https://coveralls.io/repos/github/KingJP/i-do-checkmk/badge.svg?branch=master)](https://coveralls.io/github/KingJP/i-do-checkmk?branch=master) [![status](https://img.shields.io/badge/status-alpha-red.svg)](https://github.com/KingJP/i-do-checkmk)
+# i-do-checkmk
+[![Build Status](https://travis-ci.org/KingJP/i-do-checkmk.svg?branch=master)](https://travis-ci.org/KingJP/i-do-checkmk)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9cb7685f2f504877a39800e656d45c43)](https://www.codacy.com/app/KingJP/i-do-checkmk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KingJP/i-do-checkmk&amp;utm_campaign=Badge_Grade)
+[![Code Climate](https://codeclimate.com/github/KingJP/i-do-checkmk/badges/gpa.svg)](https://codeclimate.com/github/KingJP/i-do-checkmk)
+[![Coverage Status](https://coveralls.io/repos/github/KingJP/i-do-checkmk/badge.svg?branch=master)](https://coveralls.io/github/KingJP/i-do-checkmk?branch=master)
+[![status](https://img.shields.io/badge/status-alpha-red.svg)](https://github.com/KingJP/i-do-checkmk)
 
-This is a interface between Check_MK Monitoring and i-doit IT Documentation tool. 
+This is a interface between Check_MK Monitoring and i-doit IT Documentation tool.
 
 **Contributors:** [kingjp](https://github.com/KingJP)  
 **Requires at least:** i-doit 1.8, check_mk 1.4.0, PHP5  
@@ -8,18 +13,18 @@ This is a interface between Check_MK Monitoring and i-doit IT Documentation tool
 **Release tag:** 0.0.2 alpha   
 **License:** [GPLv3 or later](https://github.com/KingJP/i-do-checkmk/blob/master/LICENSE)
 
-## Description ##
+## Description
 
 The first question you might ask is: Why do you combine the two software? Check_MK contains its own inventory of software and hardware components. This information is read from each device.  
 So why should'nt we use this information?
 
 i-doit is a powerful software for inventorying and managing hardware and software. The maintenance of the information can be quite complex depending on the extent. For this reason, we have created the possibility to automatically synchronize the information from Check_MK with the information from i-doit.
 
-## Installation ##
+## Installation
 
 You can use i-do-checkmk on Windows an Linux platforms. It is written in PHP and needs at lease PHP Version 5.0. The script is optimized for use in the command line and does not contain a nice interface. We recommend that you use git to keep i-do-checkmk up-to-date. In the installation manual, we will show the use of git and the manual installation.
 
-### Installation with git ###
+### Installation with git
 
 Please follow these simple steps to install i-do-check_mk.
 
@@ -30,7 +35,7 @@ Please follow these simple steps to install i-do-check_mk.
 5. `php i-do-checkmk.php`
 6. search for dependency errors in output
 
-### Manual installation ###
+### Manual installation
 
 The manual installation is more complicated, but still simple. Please follow the steps carefully.
 
@@ -42,17 +47,17 @@ The manual installation is more complicated, but still simple. Please follow the
 6. `php i-do-checkmk.php`
 7. search for dependency errors in output
 
-## Updating ##
+## Updating
 
 Updating with git is quite simple. You have to execute `git pull` in i-do-checkmk directory.  
 
 Updating manually installed version is simple too. Save your config.php in another folder. Delete i-do-checkmk folder. Reinstall i-do-checkmk manually and replace config.php. 
 
-## Contributing ##
+## Contributing
 
 **Pull requests are welcome.** Have a look in out Wiki before posting an issue. Your question may be answered there. Please review the [code of conduct](https://github.com/KingJP/i-do-checkmk/blob/master/code_of_conduct.md).
 
-## Changelog ##
+## Changelog
 
 ### Preview: 0.0.3 (2017-05-??)
 
