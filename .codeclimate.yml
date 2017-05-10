@@ -3,11 +3,16 @@ engines:
     enabled: true
     config:
       languages:
-      - ruby
-      - javascript
-      - python
       - php
   fixme:
+    enabled: true
+  markdownlint:
+    enabled: true
+  phan:
+    enabled: true
+    config:
+      file_extensions: "php"
+  phpcodesniffer:
     enabled: true
   phpmd:
     enabled: true
@@ -16,10 +21,24 @@ engines:
         enabled: false
       Controversial/CamelCaseClassName:
         enabled: false
+      Controversial/CamelCasePropertyName:
+        enabled: false
+      Controversial/CamelCaseParameterName:
+        enabled: false
+      Controversial/CamelCaseVariableName:
+        enabled: false
 
 ratings:
   paths:
+  - "**.css"
+  - "**.inc"
+  - "**.js"
+  - "**.jsx"
+  - "**.module"
   - "**.php"
+  - "**.py"
+  - "**.rb"
+  - "**.md"
 
 exclude_paths:
-- tests/
+# - tests/
