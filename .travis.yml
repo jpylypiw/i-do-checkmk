@@ -17,8 +17,7 @@ install:
     
 script:
   - mkdir -p build/logs
-  - phpunit -c phpunit.xml --coverage-text --verbose
+  - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml --coverage-text --verbose
 
 after_success:
-  - php coveralls.phar -v
   - php vendor/bin/coveralls -v
