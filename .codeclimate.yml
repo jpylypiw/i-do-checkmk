@@ -6,15 +6,6 @@ engines:
       - php
   fixme:
     enabled: true
-  markdownlint:
-    enabled: true
-    checks:
-      MD009:
-        br_spaces: "2"
-      MD013:
-        linelength: "150"
-      MD029:
-        ol-prefix: "ordered"
   phan:
     enabled: true
     config:
@@ -45,7 +36,6 @@ ratings:
   - "**.php"
   - "**.py"
   - "**.rb"
-  - "**.md"
 
 exclude_paths:
  - tests/
