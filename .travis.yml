@@ -12,13 +12,10 @@ matrix:
     - php: 5.6
     - php: hhvm
     
-install:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install
-
 script:
   - mkdir -p build/logs
-  - php vendor/bin/phpunit -c phpunit.xml --coverage-text --verbose
+  - phpunit -c phpunit.xml --coverage-text --verbose
 
 after_success:
-  - travis_retry php vendor/bin/coveralls -v
+  - php coveralls.phar -v
+  - php vendor/bin/coveralls -v
