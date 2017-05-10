@@ -8,10 +8,13 @@ engines:
     enabled: true
   markdownlint:
     enabled: true
-    config:
-      br_spaces: 2
-      linelength: 150
-      ol-prefix: "ordered"
+    checks:
+      MD009:
+        br_spaces: "2"
+      MD013:
+        linelength: "150"
+      MD029:
+        ol-prefix: "ordered"
   phan:
     enabled: true
     config:
