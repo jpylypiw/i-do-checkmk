@@ -61,7 +61,7 @@ Features:
 - Unit Testing using PHPUnit
 - Automated testing with Travis-CI
 - Added Status Badge in README
-- Coverage testing
+- Coverage testing using Coveralls
 - Code Tests using Codacy and Code Climate
 
 Bugfixes:
