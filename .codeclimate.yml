@@ -1,0 +1,25 @@
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
+      - python
+      - php
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    checks:
+      Naming/LongVariable:
+        enabled: false
+      Controversial/CamelCaseClassName:
+        enabled: false
+
+ratings:
+  paths:
+  - "**.php"
+
+exclude_paths:
+- tests/
