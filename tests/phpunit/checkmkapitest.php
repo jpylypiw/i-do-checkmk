@@ -7,7 +7,7 @@
 namespace i_do_checkmk;
 
 use \PHPUnit_Framework_TestCase;
-use PHPUnit\Framework\TestCase;
+//use PHPUnit\Framework\TestCase;
 
 class CheckMKAPITest extends TestCase {
 
