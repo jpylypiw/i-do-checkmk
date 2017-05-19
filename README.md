@@ -10,7 +10,7 @@ This is a interface between Check_MK Monitoring and i-doit IT Documentation tool
 **Contributors:** [kingjp](https://github.com/KingJP)  
 **Requires at least:** i-doit 1.8, check_mk 1.4.0, PHP5  
 **Tested up to:** PHP7.1  
-**Release tag:** 0.0.2 alpha   
+**Release tag:** 0.0.3 alpha   
 **License:** [GPLv3 or later](https://github.com/KingJP/i-do-checkmk/blob/master/LICENSE)
 
 ## Description
@@ -59,19 +59,19 @@ Updating manually installed version is simple too. Save your config.php in anoth
 
 ## Changelog
 
-### Preview: 0.0.3 (2017-05-??)
+### 0.0.3 (2017-05-19)
 
 Features:
 
 - Unit Testing using PHPUnit
-- Automated testing with Travis-CI
+- Automated building and testing with Travis-CI
 - Added Status Badge in README
-- Coverage testing using Coveralls
+- Calculating test coverage using Coveralls
 - Code Tests using Codacy and Code Climate
 
 Bugfixes:
 
-- Minor bug fixes in class-check-mk.php
+- Major bug fixes in class-check-mk.php
 
 ### 0.0.2 (2017-05-09)
 

@@ -94,7 +94,10 @@ if ( ! class_exists( 'Check_MK_API' )) {
             $this->_API_URL = $check_mk_server . 'webapi.py';
             $this->_INVENTORY_API_URL = $check_mk_server . 'host_inv_api.py';
 
-            return true;
+            if (is_object($this->get_all_host())) {
+                return true;
+            }
+            throw new \Exception('Unable contacting Check_MK API. Please check the hostname und credentials.');
         }
 
         /**
@@ -125,10 +128,11 @@ if ( ! class_exists( 'Check_MK_API' )) {
                 $response = curl_exec($request);
             }
             catch (\Exception $exception) {
-                error_log($exception->getMessage());
+                throw $exception;
             }
             finally {
-                curl_close($request);
+                if ($response != null)
+                    curl_close($request);
             }
 
             $response = mb_convert_encoding( $response, 'UTF-8' );
@@ -149,7 +153,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
                 $response = json_decode($response);
 
                 if ($response->result_code === 1) {
-                    error_log('Got Error from Check_MK. Error Message: ' . $response->result);
+                    throw new \Exception('Got Error from Check_MK. Error Message: ' . $response->result);
                     return false;
                 }
             }
@@ -185,7 +189,12 @@ if ( ! class_exists( 'Check_MK_API' )) {
          * @param int $create_folders
          * @return bool|mixed
          */
-        public function add_host($hostname, $folder, $attributes = '', $nodes = array(), $create_folders = 1) {
+        public function add_host($hostname, $folder, $attributes = null, $nodes = array(), $create_folders = 1) {
+            if ($attributes == null)
+            {
+                $attributes = array('site' => $this->_INSTANCE);
+            }
+
             $post_data = array(
                 'hostname' => $hostname,
                 'folder' => $folder,
@@ -222,7 +231,12 @@ if ( ! class_exists( 'Check_MK_API' )) {
          * @param array $nodes
          * @return bool|mixed
          */
-        public function edit_host($hostname, $attributes = '', $unset_attributes = array(), $nodes = array()) {
+        public function edit_host($hostname, $unset_attributes = array(), $attributes = null, $nodes = array()) {
+            if ($attributes == null)
+            {
+                $attributes = array('site' => $this->_INSTANCE);
+            }
+
             $post_data = array(
                 'hostname' => $hostname,
                 'attributes' => $attributes,
@@ -231,7 +245,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
             );
             $post_data = json_encode($post_data);
 
-            return $this->send_request('edit_host', $post_data);
+            return $this->send_request('edit_host','' , $post_data);
         }
 
         /**
@@ -249,7 +263,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
             );
             $post_data = json_encode($post_data);
 
-            return $this->send_request('delete_host', $post_data);
+            return $this->send_request('delete_host', '', $post_data);
         }
 
         /**
@@ -396,7 +410,18 @@ if ( ! class_exists( 'Check_MK_API' )) {
                 $paths = json_encode($paths);
             }
 
-            return $this->send_request('host_inv_api', '&host=' . $hostname . '&output_format=' . $output_format . (count($paths) > 0 ? '&request=' . $paths : ''));
+            return $this->send_request('host_inv_api', ($this->is_json($hostname) ? '&request=' . $hostname : '&host=' . $hostname) . '&output_format=' . $output_format . (count($paths) > 0 ? '&request=' . $paths : ''));
+        }
+
+        /**
+         * Helper Function to test if a given string is a valid json string.
+         *
+         * @param $string
+         * @return bool
+         */
+        private function is_json($string) {
+            json_decode($string);
+            return (json_last_error() == JSON_ERROR_NONE);
         }
 
     }
