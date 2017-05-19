@@ -12,6 +12,19 @@ engines:
       file_extensions: "php"
   phpcodesniffer:
     enabled: true
+    checks:
+      Generic Files LineLength TooLong:
+        enabled: false
+      Squiz Classes ValidClassName NotCamelCaps:
+        enabled: false
+      PSR2 Classes ClassDeclaration OpenBraceNewLine:
+        enabled: false
+      PSR2 Classes PropertyDeclaration Underscore:
+        enabled: false
+      PSR1 Methods CamelCapsMethodName NotCamelCaps:
+        enabled: false
+      Squiz Functions MultiLineFunctionDeclaration BraceOnSameLine:
+        enabled: false
   phpmd:
     enabled: true
     checks:
@@ -25,6 +38,8 @@ engines:
         enabled: false
       Controversial/CamelCaseVariableName:
         enabled: false
+      CleanCode/BooleanArgumentFlag:
+              enabled: false
 
 ratings:
   paths:

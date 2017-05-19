@@ -59,6 +59,21 @@ Updating manually installed version is simple too. Save your config.php in anoth
 
 ## Changelog
 
+### Preview: 0.0.4 (2017-05-??)
+
+Features:
+
+- Disable some useless checks on Codeclimate
+- Added Nightly PHP Version to Build
+- All PHP Versions have to be build correctly
+- Set static phpunit version at trivis-ci build
+- Added Composer.json
+- Dependency Check Test
+
+Bugfixes:
+
+- Prettify Code in class-check-mk.php
+
 ### 0.0.3 (2017-05-19)
 
 Features:

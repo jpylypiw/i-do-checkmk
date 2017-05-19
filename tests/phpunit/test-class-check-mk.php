@@ -3,12 +3,11 @@
  * Test class for production class "Check_MK_API".
  */
 
-
 namespace i_do_checkmk;
 
 use PHPUnit\Framework\TestCase;
 
-class CheckMKAPITest extends TestCase {
+class Check_MK_API_Test extends TestCase {
 
     private $api;
 
@@ -17,7 +16,7 @@ class CheckMKAPITest extends TestCase {
     }
 
     public function tearDown() {
-        $this->a = null;
+        $this->api = null;
     }
 
     // *********************************

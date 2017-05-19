@@ -14,7 +14,7 @@
 
 namespace i_do_checkmk;
 
-if ( ! class_exists( 'Check_MK_API' )) {
+if (! class_exists('Check_MK_API')) {
 
     /**
      * Class Check_MK_API
@@ -120,7 +120,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
                     curl_setopt($request, CURLOPT_CUSTOMREQUEST, "POST");
                     curl_setopt($request, CURLOPT_POSTFIELDS, 'request=' . $post_data);
                 } else {
-                    curl_setopt($request, CURLOPT_URL, $this->_INVENTORY_API_URL . '?_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes );
+                    curl_setopt($request, CURLOPT_URL, $this->_INVENTORY_API_URL . '?_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes);
                 }
 
                 curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
@@ -135,7 +135,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
                     curl_close($request);
             }
 
-            $response = mb_convert_encoding( $response, 'UTF-8' );
+            $response = mb_convert_encoding($response, 'UTF-8');
             return $this->validate_response($response);
         }
 
@@ -149,7 +149,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
         private function validate_response($response) {
             json_decode($response);
 
-            if ( json_last_error() === JSON_ERROR_NONE) {
+            if (json_last_error() === JSON_ERROR_NONE) {
                 $response = json_decode($response);
 
                 if ($response->result_code === 1) {
@@ -200,7 +200,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
                 'folder' => $folder,
                 'attributes' => $attributes,
                 'nodes' => $nodes
-            );
+           );
             $post_data = json_encode($post_data);
 
             return $this->send_request('add_host', '&create_folders=' . $create_folders, $post_data);
@@ -242,7 +242,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
                 'attributes' => $attributes,
                 'unset_attributes' => $unset_attributes,
                 'nodes' => $nodes
-            );
+           );
             $post_data = json_encode($post_data);
 
             return $this->send_request('edit_host','' , $post_data);
@@ -260,7 +260,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
         public function delete_host($hostname) {
             $post_data = array(
                 'hostname' => $hostname
-            );
+           );
             $post_data = json_encode($post_data);
 
             return $this->send_request('delete_host', '', $post_data);
@@ -282,7 +282,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
         public function get_host($hostname, $effective_attributes = 0) {
             $post_data = array(
                 'hostname' => $hostname
-            );
+           );
             $post_data = json_encode($post_data);
 
             return $this->send_request('get_host', '&effective_attributes=' . $effective_attributes, $post_data);
@@ -320,7 +320,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
         public function discover_services($hostname, $mode = 'new') {
             $post_data = array(
                 'hostname' => $hostname
-            );
+           );
             $post_data = json_encode($post_data);
 
             return $this->send_request('discover_services', '&mode=' . $mode, $post_data);
@@ -366,7 +366,7 @@ if ( ! class_exists( 'Check_MK_API' )) {
             if ($sites != null) {
                 $post_data = array(
                     'sites' => $sites
-                );
+               );
                 $post_data = json_encode($post_data);
             }
 
@@ -394,19 +394,21 @@ if ( ! class_exists( 'Check_MK_API' )) {
          * @return bool|mixed
          */
         public function host_inv_api($hostname, $output_format = 'json', $paths = array()) {
-            if ( is_array($hostname) && !array_key_exists( 'hosts', $hostname) ) {
-                $hostname = array( 'hosts' => $hostname );
+            if (is_array($hostname)) {
+                if (!array_key_exists('hosts', $hostname)) {
+                    $hostname = array('hosts' => $hostname);
+                }
             }
 
-            if ( is_array($hostname) ) {
+            if (is_array($hostname)) {
                 $hostname = json_encode($hostname);
             }
 
-            if ( count($paths) > 0 && !array_key_exists('paths', $paths) ) {
-                $paths = array( 'paths' => $paths );
+            if (count($paths) > 0 && !array_key_exists('paths', $paths)) {
+                $paths = array('paths' => $paths);
             }
 
-            if ( count($paths) > 0 ) {
+            if (count($paths) > 0) {
                 $paths = json_encode($paths);
             }
 
