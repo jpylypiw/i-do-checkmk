@@ -3,13 +3,13 @@ function loader($class)
 {
     $file = '';
 
-    if ($class === 'i_do_checkmk\CheckMkApi')
+    if ($class === 'I_Do_Checkmk\CheckMkApi')
         $file = 'src/CheckMkApi.php';
 
-    if ($class === 'i_do_checkmk\DependencyCheck')
+    if ($class === 'I_Do_Checkmk\DependencyCheck')
         $file = 'src/DependencyCheck.php';
 
-    if ($class === 'i_do_checkmk\Tools')
+    if ($class === 'I_Do_Checkmk\Tools')
         $file = 'src/Tools.php';
 
     if (file_exists($file)) {
