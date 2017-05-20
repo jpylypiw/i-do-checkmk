@@ -2,6 +2,12 @@
   "name": "KingJP/i-do-checkmk",
   "description": "This is a interface between Check_MK Monitoring and i-doit IT Documentation tool.",
   "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Jochen Pylypiw",
+      "email": "jochen@pylypiw.com"
+    }
+  ],
   "keywords": [
     "php",
     "checkmk",
@@ -9,7 +15,12 @@
     "interface"
   ],
   "homepage": "https://github.com/KingJP/i-do-checkmk",
+  "require": {
+    "php": ">=5.6.0"
+  },
   "require-dev": {
+    "squizlabs/php_codesniffer": "*",
+    "satooshi/php-coveralls": "*",
     "phpunit/phpunit": "^5.7"
   }
 }

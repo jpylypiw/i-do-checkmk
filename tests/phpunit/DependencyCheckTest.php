@@ -1,26 +1,26 @@
 <?php
 /**
- * Check class for Class "Dependency_Check"
+ * Check class for Class "DependencyCheck"
  */
 
-namespace i_do_checkmk;
+namespace I_Do_Checkmk;
 
 use PHPUnit\Framework\TestCase;
 
 function function_exists($function) {
-    if (Dependency_Check_Test::$exists == true)
+    if (DependencyCheckTest::$exists == true)
         return true;
     return false;
 }
 
-class Dependency_Check_Test extends TestCase {
+class DependencyCheckTest extends TestCase {
 
     private $dependency_check;
     public static $exists;
 
     public function setUp() {
         self::$exists = true;
-        $this->dependency_check = new Dependency_Check();
+        $this->dependency_check = new DependencyCheck();
     }
 
     public function tearDown() {
@@ -31,15 +31,15 @@ class Dependency_Check_Test extends TestCase {
     public function test_construct()
     {
         $this->assertInstanceOf(
-            Dependency_Check::class,
-            new Dependency_Check()
+            DependencyCheck::class,
+            new DependencyCheck()
         );
     }
 
     public function test_check_all_dependencies()
     {
         $this->assertTrue(
-            $this->dependency_check->check_all_dependencies()
+            $this->dependency_check->checkAllDependencies()
         );
     }
 
@@ -51,7 +51,7 @@ class Dependency_Check_Test extends TestCase {
             \Exception::class
         );
 
-        $this->dependency_check->check_curl();
+        $this->dependency_check->checkCurl();
     }
 
     public function test_check_json()
@@ -62,7 +62,6 @@ class Dependency_Check_Test extends TestCase {
             \Exception::class
         );
 
-        $this->dependency_check->check_json();
+        $this->dependency_check->checkJson();
     }
-
 }

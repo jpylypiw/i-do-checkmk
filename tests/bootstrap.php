@@ -3,11 +3,14 @@ function loader($class)
 {
     $file = '';
 
-    if ($class === 'i_do_checkmk\Check_MK_API')
-        $file = 'src/class-check-mk.php';
+    if ($class === 'i_do_checkmk\CheckMkApi')
+        $file = 'src/CheckMkApi.php';
 
-    if ($class === 'i_do_checkmk\Dependency_Check')
-        $file = 'src/class-dependency-check.php';
+    if ($class === 'i_do_checkmk\DependencyCheck')
+        $file = 'src/DependencyCheck.php';
+
+    if ($class === 'i_do_checkmk\Tools')
+        $file = 'src/Tools.php';
 
     if (file_exists($file)) {
         require $file;

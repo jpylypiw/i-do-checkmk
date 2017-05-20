@@ -1,7 +1,5 @@
 <?php
 /**
- * Welcome to i-do-checkmk.
- *
  * This class contains the interface to Check_MK.
  *
  * You can find the full Documentation of Check_MK JSON Web API here:
@@ -12,22 +10,23 @@
  * You might give the automation user the role Administrator if you want full control.
  */
 
-namespace i_do_checkmk;
+namespace I_Do_Checkmk;
 
-if (! class_exists('Check_MK_API')) {
+if (! class_exists('CheckMkApi')) {
+
 
     /**
-     * Class Check_MK_API
-     * @package i_do_checkmk
+     * Class CheckMkApi
+     * @package I_Do_Checkmk
      */
-    class Check_MK_API {
+    class CheckMkApi {
 
         /**
          * Defines the hostname of Check_MK Server.
          *
          * @var string
          */
-        private $_HOSTNAME;
+        private $HOSTNAME;
 
         /**
          * Contains the Check_MK Server Site ID.
@@ -35,7 +34,7 @@ if (! class_exists('Check_MK_API')) {
          *
          * @var string
          */
-        private $_INSTANCE;
+        private $INSTANCE;
 
         /**
          * The username of the API User.
@@ -43,7 +42,7 @@ if (! class_exists('Check_MK_API')) {
          *
          * @var string
          */
-        private $_USERNAME;
+        private $USERNAME;
 
         /**
          * The automatition secret of the api user.
@@ -51,7 +50,7 @@ if (! class_exists('Check_MK_API')) {
          *
          * @var string
          */
-        private $_PASSWORD;
+        private $PASSWORD;
 
         /**
          * Set the API URL of the Check_MK Server.
@@ -61,7 +60,7 @@ if (! class_exists('Check_MK_API')) {
          *
          * @var string
          */
-        private $_API_URL;
+        private $API_URL;
 
         /**
          * Check_MK has a special Inventory API url.
@@ -69,32 +68,34 @@ if (! class_exists('Check_MK_API')) {
          *
          * @var string
          */
-        private $_INVENTORY_API_URL;
+        private $INVENTORY_API_URL;
 
         /**
-         * Check_MK_API constructor.
+         * CheckMkApi constructor.
          * @param $hostname
          * @param $instance
          * @param $username
          * @param $password
          * @param bool $ssl
+         * @throws \Exception
          */
         public function __construct($hostname, $instance, $username, $password, $ssl = false)
         {
-            $this->_HOSTNAME = $hostname;
-            $this->_INSTANCE = $instance;
-            $this->_USERNAME = $username;
-            $this->_PASSWORD = $password;
+            $hostname = Tools::cleanHostname($hostname);
 
-            $hostname = trim($hostname, '/');
+            $this->HOSTNAME = $hostname;
+            $this->INSTANCE = $instance;
+            $this->USERNAME = $username;
+            $this->PASSWORD = $password;
+
             $instance = trim($instance, '/');
 
             $check_mk_server = ($ssl === true ? 'https://' : 'http://') .  $hostname . '/' . $instance . '/check_mk/';
 
-            $this->_API_URL = $check_mk_server . 'webapi.py';
-            $this->_INVENTORY_API_URL = $check_mk_server . 'host_inv_api.py';
+            $this->API_URL = $check_mk_server . 'webapi.py';
+            $this->INVENTORY_API_URL = $check_mk_server . 'host_inv_api.py';
 
-            if (is_object($this->get_all_host())) {
+            if (is_object($this->getAllHosts())) {
                 return true;
             }
             throw new \Exception('Unable contacting Check_MK API. Please check the hostname und credentials.');
@@ -107,8 +108,9 @@ if (! class_exists('Check_MK_API')) {
          * @param string $attributes
          * @param string $post_data
          * @return bool|mixed
+         * @throws \Exception
          */
-        private function send_request($action, $attributes = '', $post_data = '{}') {
+        private function sendRequest($action, $attributes = '', $post_data = '{}') {
             $response = '';
             $request = null;
 
@@ -116,11 +118,11 @@ if (! class_exists('Check_MK_API')) {
                 $request = curl_init();
 
                 if ($action !== 'host_inv_api') {
-                    curl_setopt($request, CURLOPT_URL, $this->_API_URL . '?action=' . $action . '&_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes);
+                    curl_setopt($request, CURLOPT_URL, $this->API_URL . '?action=' . $action . '&_username=' . $this->USERNAME . '&_secret=' . $this->PASSWORD . $attributes);
                     curl_setopt($request, CURLOPT_CUSTOMREQUEST, "POST");
                     curl_setopt($request, CURLOPT_POSTFIELDS, 'request=' . $post_data);
                 } else {
-                    curl_setopt($request, CURLOPT_URL, $this->_INVENTORY_API_URL . '?_username=' . $this->_USERNAME . '&_secret=' . $this->_PASSWORD . $attributes);
+                    curl_setopt($request, CURLOPT_URL, $this->INVENTORY_API_URL . '?_username=' . $this->USERNAME . '&_secret=' . $this->PASSWORD . $attributes);
                 }
 
                 curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
@@ -131,12 +133,12 @@ if (! class_exists('Check_MK_API')) {
                 throw $exception;
             }
             finally {
-                if ($response != null)
+                if ($request != null)
                     curl_close($request);
             }
 
             $response = mb_convert_encoding($response, 'UTF-8');
-            return $this->validate_response($response);
+            return $this->validateResponse($response);
         }
 
         /**
@@ -145,8 +147,9 @@ if (! class_exists('Check_MK_API')) {
          *
          * @param $response
          * @return bool|mixed
+         * @throws \Exception
          */
-        private function validate_response($response) {
+        private function validateResponse($response) {
             json_decode($response);
 
             if (json_last_error() === JSON_ERROR_NONE) {
@@ -189,10 +192,10 @@ if (! class_exists('Check_MK_API')) {
          * @param int $create_folders
          * @return bool|mixed
          */
-        public function add_host($hostname, $folder, $attributes = null, $nodes = array(), $create_folders = 1) {
+        public function addHost($hostname, $folder, $attributes = null, $nodes = array(), $create_folders = 1) {
             if ($attributes == null)
             {
-                $attributes = array('site' => $this->_INSTANCE);
+                $attributes = array('site' => $this->INSTANCE);
             }
 
             $post_data = array(
@@ -203,7 +206,7 @@ if (! class_exists('Check_MK_API')) {
            );
             $post_data = json_encode($post_data);
 
-            return $this->send_request('add_host', '&create_folders=' . $create_folders, $post_data);
+            return $this->sendRequest('add_host', '&create_folders=' . $create_folders, $post_data);
         }
 
         /**
@@ -231,10 +234,10 @@ if (! class_exists('Check_MK_API')) {
          * @param array $nodes
          * @return bool|mixed
          */
-        public function edit_host($hostname, $unset_attributes = array(), $attributes = null, $nodes = array()) {
+        public function editHost($hostname, $unset_attributes = array(), $attributes = null, $nodes = array()) {
             if ($attributes == null)
             {
-                $attributes = array('site' => $this->_INSTANCE);
+                $attributes = array('site' => $this->INSTANCE);
             }
 
             $post_data = array(
@@ -245,7 +248,7 @@ if (! class_exists('Check_MK_API')) {
            );
             $post_data = json_encode($post_data);
 
-            return $this->send_request('edit_host','' , $post_data);
+            return $this->sendRequest('edit_host', '', $post_data);
         }
 
         /**
@@ -257,13 +260,13 @@ if (! class_exists('Check_MK_API')) {
          * @param $hostname
          * @return bool|mixed
          */
-        public function delete_host($hostname) {
+        public function deleteHost($hostname) {
             $post_data = array(
                 'hostname' => $hostname
            );
             $post_data = json_encode($post_data);
 
-            return $this->send_request('delete_host', '', $post_data);
+            return $this->sendRequest('delete_host', '', $post_data);
         }
 
         /**
@@ -279,13 +282,13 @@ if (! class_exists('Check_MK_API')) {
          * @param int $effective_attributes
          * @return bool|mixed
          */
-        public function get_host($hostname, $effective_attributes = 0) {
+        public function getHost($hostname, $effective_attributes = 0) {
             $post_data = array(
                 'hostname' => $hostname
            );
             $post_data = json_encode($post_data);
 
-            return $this->send_request('get_host', '&effective_attributes=' . $effective_attributes, $post_data);
+            return $this->sendRequest('get_host', '&effective_attributes=' . $effective_attributes, $post_data);
         }
 
         /**
@@ -297,8 +300,8 @@ if (! class_exists('Check_MK_API')) {
          * @param int $effective_attributes
          * @return bool|mixed
          */
-        public function get_all_host($effective_attributes = 0) {
-            return $this->send_request('get_all_hosts', '&effective_attributes=' . $effective_attributes);
+        public function getAllHosts($effective_attributes = 0) {
+            return $this->sendRequest('get_all_hosts', '&effective_attributes=' . $effective_attributes);
         }
 
         /**
@@ -317,13 +320,13 @@ if (! class_exists('Check_MK_API')) {
          * @param string $mode
          * @return bool|mixed
          */
-        public function discover_services($hostname, $mode = 'new') {
+        public function discoverServices($hostname, $mode = 'new') {
             $post_data = array(
                 'hostname' => $hostname
            );
             $post_data = json_encode($post_data);
 
-            return $this->send_request('discover_services', '&mode=' . $mode, $post_data);
+            return $this->sendRequest('discover_services', '&mode=' . $mode, $post_data);
         }
 
         /**
@@ -332,8 +335,8 @@ if (! class_exists('Check_MK_API')) {
          *
          * @return bool|mixed
          */
-        public function bake_agents() {
-            return $this->send_request('bake_agents');
+        public function bakeAgents() {
+            return $this->sendRequest('bake_agents');
         }
 
         /**
@@ -360,7 +363,7 @@ if (! class_exists('Check_MK_API')) {
          * @param int $allow_foreign_changes
          * @return bool|mixed
          */
-        public function activate_changes($sites = null, $mode = 'dirty', $allow_foreign_changes = 0) {
+        public function activateChanges($sites = null, $mode = 'dirty', $allow_foreign_changes = 0) {
             $post_data = '{}';
 
             if ($sites != null) {
@@ -370,7 +373,7 @@ if (! class_exists('Check_MK_API')) {
                 $post_data = json_encode($post_data);
             }
 
-            return $this->send_request('activate_changes', '&mode=' . $mode . '&allow_foreign_changes=' . $allow_foreign_changes, $post_data);
+            return $this->sendRequest('activate_changes', '&mode=' . $mode . '&allow_foreign_changes=' . $allow_foreign_changes, $post_data);
         }
 
         /**
@@ -393,7 +396,7 @@ if (! class_exists('Check_MK_API')) {
          * @param array $paths
          * @return bool|mixed
          */
-        public function host_inv_api($hostname, $output_format = 'json', $paths = array()) {
+        public function hostInvApi($hostname, $output_format = 'json', $paths = array()) {
             if (is_array($hostname)) {
                 if (!array_key_exists('hosts', $hostname)) {
                     $hostname = array('hosts' => $hostname);
@@ -412,22 +415,9 @@ if (! class_exists('Check_MK_API')) {
                 $paths = json_encode($paths);
             }
 
-            return $this->send_request('host_inv_api', ($this->is_json($hostname) ? '&request=' . $hostname : '&host=' . $hostname) . '&output_format=' . $output_format . (!is_array($paths) ? '&request=' . $paths : ''));
+            return $this->sendRequest('host_inv_api', (Tools::isJson($hostname) ? '&request=' . $hostname : '&host=' . $hostname) . '&output_format=' . $output_format . (!is_array($paths) ? '&request=' . $paths : ''));
         }
-
-        /**
-         * Helper Function to test if a given string is a valid json string.
-         *
-         * @param $string
-         * @return bool
-         */
-        private function is_json($string) {
-            json_decode($string);
-            return (json_last_error() == JSON_ERROR_NONE);
-        }
-
     }
-
 }
 
 ?>
