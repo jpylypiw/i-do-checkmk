@@ -1,6 +1,6 @@
 <?php
 /**
- * Test class for production class "Check_MK_API".
+ * Test class for class "Check_MK_API".
  */
 
 namespace i_do_checkmk;

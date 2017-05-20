@@ -69,10 +69,12 @@ Features:
 - Set static phpunit version at trivis-ci build
 - Added Composer.json
 - Dependency Check Test
+- Moved Sourcecode to src folder
 
 Bugfixes:
 
 - Prettify Code in class-check-mk.php
+- Minor Changes in class-check-mk.php for PHP Nightly
 
 ### 0.0.3 (2017-05-19)
 

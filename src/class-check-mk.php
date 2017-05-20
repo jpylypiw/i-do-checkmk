@@ -412,7 +412,7 @@ if (! class_exists('Check_MK_API')) {
                 $paths = json_encode($paths);
             }
 
-            return $this->send_request('host_inv_api', ($this->is_json($hostname) ? '&request=' . $hostname : '&host=' . $hostname) . '&output_format=' . $output_format . (count($paths) > 0 ? '&request=' . $paths : ''));
+            return $this->send_request('host_inv_api', ($this->is_json($hostname) ? '&request=' . $hostname : '&host=' . $hostname) . '&output_format=' . $output_format . (!is_array($paths) ? '&request=' . $paths : ''));
         }
 
         /**
